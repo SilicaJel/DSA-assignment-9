@@ -1,12 +1,12 @@
 import random
 import time
 
-#  Creates a data structure with 300+ random elements
+# 1️ Creates a data structure with 300+ random elements
 data = [random.randint(1, 1000) for _ in range(300)]
 
-#  Selection Sort function
+# --- Selection Sort ---
 def selection_sort(arr):
-    arr = arr.copy()  # making a copy to keep original data
+    arr = arr.copy()
     n = len(arr)
     for i in range(n):
         min_idx = i
@@ -16,10 +16,39 @@ def selection_sort(arr):
         arr[i], arr[min_idx] = arr[min_idx], arr[i]
     return arr
 
-# Measures performance
-start_time = time.time()
-sorted_data = selection_sort(data)
-end_time = time.time()
+# --- Insertion Sort ---
+def insertion_sort(arr):
+    arr = arr.copy()
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and key < arr[j]:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
+    return arr
 
-print(f"Selection Sort took {end_time - start_time:.6f} seconds")
-print("First 20 sorted elements:", sorted_data[:20])
+# --- Quick Sort ---
+def quick_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quick_sort(left) + middle + quick_sort(right)
+
+# --- Run and time each algorithm ---
+algorithms = [
+    ("Selection Sort", selection_sort),
+    ("Insertion Sort", insertion_sort),
+    ("Quick Sort", quick_sort)
+]
+
+for name, func in algorithms:
+    start_time = time.time()
+    sorted_data = func(data)
+    end_time = time.time()
+    print(f"{name} took {end_time - start_time:.6f} seconds")
+    print(f"First 20 sorted elements: {sorted_data[:20]}")
+    print("-" * 50)
